@@ -2,16 +2,15 @@ name: Python application
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 permissions:
   contents: read
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -36,4 +35,3 @@ jobs:
       - name: Run tests
         run: |
           if [ -f test_sample.py ]; then pytest || true; fi
-
