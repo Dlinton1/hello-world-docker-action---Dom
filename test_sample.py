@@ -1,2 +1,5 @@
+"""Sample test module."""
+
 def test_example():
-    assert 1 == 1
+    """Example test that always passes."""
+    assert True
