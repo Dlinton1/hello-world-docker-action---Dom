@@ -16,7 +16,6 @@ jobs:
     name: Docker Tests
     runs-on: ubuntu-latest
 
-    # Run a local registry to push to
     services:
       registry:
         image: registry:2
@@ -24,12 +23,13 @@ jobs:
           - 5001:5000
 
     env:
-      TEST_TAG: localhost:5001/actions/hello-world-docer-action:latest
+      TEST_TAG: localhost:5001/actions/hello-world-docker-action:latest
+      INPUT_WHO_TO_GREET: Mona Lisa Octocat
 
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Setup Docker BuildX
         id: setup-buildx
@@ -39,7 +39,7 @@ jobs:
 
       - name: Build the Container
         id: build
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v5
         with:
           context: .
           push: true
@@ -47,12 +47,10 @@ jobs:
 
       - name: Run the Container
         id: run
-        env:
-          INPUT_WHO_TO_GREET: Mona Lisa Octocat
         run: |
           docker run \
-            --env INPUT_WHO_TO_GREET="${{ env.INPUT_WHO_TO_GREET }}" \
-            --rm ${{ env.TEST_TAG }}
+            --env INPUT_WHO_TO_GREET="${INPUT_WHO_TO_GREET}" \
+            --rm "${TEST_TAG}"
 
   test-action:
     name: GitHub Actions Test
@@ -61,7 +59,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Test Local Action
         id: test-action
